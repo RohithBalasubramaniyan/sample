@@ -1,0 +1,26 @@
+{
+  "name": "rohith-portfolio-fullstack",
+  "version": "1.0.0",
+  "description": "Full-Stack Dynamic Personal Portfolio for Rohith B",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev:all": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev",
+    "seed": "npm --prefix server run seed",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "keywords": [
+    "portfolio",
+    "react",
+    "tailwind",
+    "node",
+    "express",
+    "mongodb"
+  ],
+  "author": "Rohith B",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}
