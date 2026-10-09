@@ -13,10 +13,11 @@ server/.env.local
 client/.env
 client/.env.local
 
-# Production builds
+# Production builds & coverage
 dist/
 client/dist/
 build/
+coverage/
 
 # Server uploads (keep directory with .gitkeep)
 server/uploads/*

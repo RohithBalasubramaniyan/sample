@@ -12,15 +12,15 @@ export const portfolioData = {
   // 1. Personal & Hero Section
   personal: {
     name: "Rohith B",
-    role: "IT Student | Web Developer",
-    tagline: "Building modern, scalable, and responsive web applications",
-    bio: "I am an Information Technology student and enthusiastic web developer passionate about engineering high-performance web applications, resilient backend architectures, and clean, intuitive user interfaces. I love turning complex problems into elegant, real-world digital solutions.",
+    role: "Aspiring Full-Stack Developer",
+    tagline: "Developer creating thoughtful digital experiences.",
+    bio: "I'm an IT student at heart and a developer by practice — building full-stack web applications that are fast, intuitive, and built to last. I care deeply about code quality, design precision, and the experience behind every interface.",
     email: "rohithb.dev@gmail.com",
     phone: "+91 98765 43210",
     location: "Bengaluru, Karnataka, India",
     profileImage: "/images/profile.jpg",
     resume: "/resume/resume.pdf",
-    statusBadge: "Available for Internships & Opportunities",
+    statusBadge: "Open to Internships & Opportunities",
     specialization: "Full-Stack & Web Engineering",
   },
 

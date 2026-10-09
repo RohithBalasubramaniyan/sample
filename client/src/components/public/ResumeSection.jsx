@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FileText, Download, Eye, ExternalLink, CheckCircle, Sparkles, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FileText, Download, Eye, X, CheckCircle, ExternalLink } from 'lucide-react';
 
 const ResumeSection = ({ personal, resumeDetails, profile }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -9,173 +9,134 @@ const ResumeSection = ({ personal, resumeDetails, profile }) => {
 
   const name = personalData.name || 'Rohith B';
   const resumeUrl = personalData.resume || personalData.resumeUrl || details.resumeUrl;
-  const headline = details.headline || `${name}'s Official Resume`;
+  const headline = details.headline || `${name}'s Technical Resume`;
 
   const keyHighlights = details.highlights || [
-    'Bachelor of Technology in Information Technology (VTU)',
-    'Proficient in JavaScript (ES6+), React.js, Node.js, Express, and MongoDB',
-    'Practical experience designing RESTful APIs and responsive Tailwind interfaces',
-    'Version control with Git/GitHub, Clean Architecture, and Agile practices',
+    'B.Tech Information Technology degree with strong engineering principles',
+    'Full-Stack competence with React.js, Node.js, Express, and MongoDB',
+    'Designing scalable REST APIs and modern responsive user experiences',
+    'Strong focus on performance, code cleanlines, and modern UI engineering',
   ];
 
   return (
-    <section id="resume" className="py-24 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
-            Curriculum Vitae
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
-            Resume & Professional Summary
-          </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600">
-            Preview or download my complete resume for a detailed view of my academic coursework, technical projects, and career milestones.
-          </p>
-        </div>
+    <>
+      <section id="resume" className="py-24 px-6 lg:px-12 relative overflow-hidden">
+        <div className="max-w-5xl mx-auto z-10 relative">
+          
+          {/* Header */}
+          <div className="mb-14">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs uppercase tracking-widest font-mono mb-3">
+              <FileText className="w-3 h-3 text-cyan-400" />
+              <span>07 // Document</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white">
+              Curriculum <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">Vitae</span>
+            </h2>
+            <p className="mt-2 text-slate-400 text-sm sm:text-base max-w-xl">
+              Download or view my complete technical resume and qualifications.
+            </p>
+          </div>
 
-        {/* Resume Showcase Card */}
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
-          {/* Subtle background glow */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-blue-300 text-xs font-semibold backdrop-blur-md">
-                <Sparkles className="w-3.5 h-3.5" />
-                Updated & Ready for Review
-              </div>
-
-              <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-                {headline}
-              </h3>
-
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-wider text-blue-300">
-                  Key Qualifications Highlight:
+          {/* Main Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="p-8 sm:p-10 rounded-2xl bg-[#0E0E28]/80 backdrop-blur-xl border border-purple-500/20 shadow-[0_8px_32px_rgba(0,0,0,0.5)] relative overflow-hidden"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              
+              <div className="lg:col-span-7 space-y-4">
+                <h3 className="text-2xl font-bold text-white">
+                  {headline}
+                </h3>
+                <p className="text-slate-300 text-sm leading-relaxed">
+                  Looking for a full-stack developer who brings high attention to detail, modern styling, and clean API architecture? Here is a breakdown of my qualifications:
                 </p>
-                {keyHighlights.map((highlight, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 text-sm text-slate-300">
-                    <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
-                    <span>{highlight}</span>
-                  </div>
-                ))}
+
+                <ul className="space-y-2.5 pt-2">
+                  {keyHighlights.map((hl, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-300">
+                      <CheckCircle className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                      <span>{hl}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              {/* Action Buttons */}
-              <div className="pt-4 flex flex-wrap items-center gap-4">
+              <div className="lg:col-span-5 flex flex-col gap-4 items-stretch justify-center">
                 {resumeUrl ? (
                   <>
                     <a
                       href={resumeUrl}
-                      download={`${name.replace(/\s+/g, '_')}_Resume.pdf`}
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-lg shadow-blue-600/30 transition-all duration-200 hover:-translate-y-0.5"
+                      download
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-4 px-6 rounded-full font-bold text-sm uppercase tracking-wider text-white bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 shadow-[0_0_20px_rgba(155,93,229,0.5)] flex items-center justify-center gap-2 transition-all cursor-pointer text-center"
                     >
                       <Download className="w-4 h-4" />
-                      Download PDF
+                      <span>Download Resume (PDF)</span>
                     </a>
 
                     <button
                       onClick={() => setIsPreviewOpen(true)}
-                      className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-sm border border-white/20 transition-all duration-200"
+                      className="w-full py-3.5 px-6 rounded-full font-semibold text-xs uppercase tracking-wider text-slate-200 bg-[#121232] border border-purple-500/30 hover:border-cyan-400 flex items-center justify-center gap-2 transition-all cursor-pointer"
                     >
-                      <Eye className="w-4 h-4" />
-                      Preview
+                      <Eye className="w-4 h-4 text-cyan-400" />
+                      <span>Preview in Browser</span>
                     </button>
                   </>
                 ) : (
-                  <div className="text-sm text-slate-400 italic">
-                    Resume file is being updated. Available upon request.
+                  <div className="p-4 rounded-xl bg-[#121232] border border-purple-500/20 text-center">
+                    <p className="text-xs text-slate-400">
+                      Resume PDF will be made available shortly.
+                    </p>
                   </div>
                 )}
               </div>
+
             </div>
+          </motion.div>
 
-            {/* Right Mini Preview Card */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div
-                onClick={() => resumeUrl && setIsPreviewOpen(true)}
-                className={`w-56 sm:w-64 aspect-[1/1.4] bg-white rounded-2xl p-5 shadow-2xl text-slate-800 flex flex-col justify-between transform transition-all duration-300 border-4 border-slate-700/60 ${
-                  resumeUrl ? 'cursor-pointer hover:scale-105 hover:rotate-1' : ''
-                }`}
-              >
-                <div>
-                  <div className="flex items-center justify-between border-b pb-3 mb-3">
-                    <div>
-                      <div className="font-bold text-sm text-slate-900">{name}</div>
-                      <div className="text-[10px] text-blue-600 font-medium">
-                        {personalData.role || personalData.title || 'Software Engineer'}
-                      </div>
-                    </div>
-                    <FileText className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div className="space-y-2">
-                    <div className="h-2 bg-slate-200 rounded-full w-full"></div>
-                    <div className="h-2 bg-slate-100 rounded-full w-4/5"></div>
-                    <div className="h-2 bg-slate-100 rounded-full w-3/4"></div>
-                    <div className="h-2 bg-slate-200 rounded-full w-full mt-4"></div>
-                    <div className="h-2 bg-slate-100 rounded-full w-5/6"></div>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t flex items-center justify-between text-[11px] text-slate-500 font-semibold">
-                  <span>PDF Document</span>
-                  <span className="text-blue-600 flex items-center gap-1">
-                    Click to view <Eye className="w-3 h-3" />
-                  </span>
-                </div>
-              </div>
-            </div>
-
-          </div>
         </div>
+      </section>
 
-      </div>
-
-      {/* Modal Preview */}
-      {isPreviewOpen && resumeUrl && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 w-full max-w-4xl h-[85vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl border border-slate-700">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950">
-              <div className="flex items-center gap-3">
-                <FileText className="w-5 h-5 text-blue-400" />
-                <h4 className="text-white font-bold text-sm sm:text-base">
-                  {name} - Resume Preview
-                </h4>
+      {/* Preview Modal */}
+      <AnimatePresence>
+        {isPreviewOpen && resumeUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
+          >
+            <div className="relative w-full max-w-4xl h-[85vh] bg-[#0E0E28] border border-purple-500/30 rounded-2xl overflow-hidden flex flex-col">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-purple-500/20">
+                <span className="text-sm font-bold text-white">Resume Preview</span>
+                <div className="flex items-center gap-3">
+                  <a
+                    href={resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-cyan-400 hover:underline flex items-center gap-1"
+                  >
+                    Open in new tab <ExternalLink className="w-3 h-3" />
+                  </a>
+                  <button
+                    onClick={() => setIsPreviewOpen(false)}
+                    className="p-1 rounded-full text-slate-400 hover:text-white"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href={resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-                  title="Open in new tab"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-                <button
-                  onClick={() => setIsPreviewOpen(false)}
-                  className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-                  title="Close preview"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+              <iframe src={resumeUrl} className="w-full flex-1" title="Resume" />
             </div>
-
-            <div className="flex-1 bg-slate-800">
-              <iframe
-                src={resumeUrl}
-                title="Resume PDF"
-                className="w-full h-full border-0"
-              />
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

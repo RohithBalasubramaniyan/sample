@@ -50,7 +50,6 @@ const PortfolioPage = () => {
 
         if (!isMounted) return;
 
-        // 1. Process Profile & About Data
         if (profileRes.status === 'fulfilled' && profileRes.value?.data) {
           const p = profileRes.value.data;
           setPersonal((prev) => ({
@@ -73,8 +72,8 @@ const PortfolioPage = () => {
             viewProjectsText: p.viewProjectsText || 'View Projects',
             viewResumeText: p.viewResumeText || 'Download Resume',
             careerObjective: p.careerObjective || prev.careerObjective,
-            interests: p.interests && p.interests.length > 0 ? p.interests : prev.interests,
-            currentLearning: p.currentLearning && p.currentLearning.length > 0 ? p.currentLearning : prev.currentLearning,
+            interests: p.interests?.length > 0 ? p.interests : prev.interests,
+            currentLearning: p.currentLearning?.length > 0 ? p.currentLearning : prev.currentLearning,
             aboutTitle: p.aboutTitle || prev.aboutTitle,
             aboutSubtitle: p.aboutSubtitle || prev.aboutSubtitle,
             aboutDescription: p.aboutDescription || prev.aboutDescription,
@@ -89,8 +88,8 @@ const PortfolioPage = () => {
             description: p.aboutDescription || p.bio || prev.description,
             aboutDescription: p.aboutDescription || prev.description,
             careerObjective: p.careerObjective || prev.careerObjective,
-            interests: p.interests && p.interests.length > 0 ? p.interests : prev.interests,
-            currentLearning: p.currentLearning && p.currentLearning.length > 0 ? p.currentLearning : prev.currentLearning,
+            interests: p.interests?.length > 0 ? p.interests : prev.interests,
+            currentLearning: p.currentLearning?.length > 0 ? p.currentLearning : prev.currentLearning,
           }));
 
           setContact((prev) => ({
@@ -101,32 +100,21 @@ const PortfolioPage = () => {
           }));
         }
 
-        // 2. Process Skills
         if (skillsRes.status === 'fulfilled' && Array.isArray(skillsRes.value?.data) && skillsRes.value.data.length > 0) {
           setSkills(skillsRes.value.data);
         }
-
-        // 3. Process Projects
         if (projectsRes.status === 'fulfilled' && Array.isArray(projectsRes.value?.data) && projectsRes.value.data.length > 0) {
           setProjects(projectsRes.value.data);
         }
-
-        // 4. Process Education
         if (educationRes.status === 'fulfilled' && Array.isArray(educationRes.value?.data) && educationRes.value.data.length > 0) {
           setEducation(educationRes.value.data);
         }
-
-        // 5. Process Experience
         if (experienceRes.status === 'fulfilled' && Array.isArray(experienceRes.value?.data) && experienceRes.value.data.length > 0) {
           setExperience(experienceRes.value.data);
         }
-
-        // 6. Process Certifications
         if (certificationsRes.status === 'fulfilled' && Array.isArray(certificationsRes.value?.data) && certificationsRes.value.data.length > 0) {
           setCertifications(certificationsRes.value.data);
         }
-
-        // 7. Process Social Links
         if (socialLinksRes.status === 'fulfilled' && Array.isArray(socialLinksRes.value?.data) && socialLinksRes.value.data.length > 0) {
           setSocialLinks(socialLinksRes.value.data);
         }
@@ -136,19 +124,18 @@ const PortfolioPage = () => {
     };
 
     fetchAllDynamicData();
-
-    return () => {
-      isMounted = false;
-    };
+    return () => { isMounted = false; };
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white">
-      {/* Navigation Header */}
+    <div className="min-h-screen flex flex-col bg-[#0A0A18] text-[#F0F0FF] relative overflow-hidden font-sans selection:bg-purple-500/40 selection:text-white">
+      {/* Ambient background glows */}
+      <div className="fixed top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/15 blur-[140px] pointer-events-none -z-10" />
+      <div className="fixed top-[20%] right-[-10%] w-[550px] h-[550px] rounded-full bg-cyan-500/12 blur-[140px] pointer-events-none -z-10" />
+      <div className="fixed bottom-[-10%] left-[20%] w-[700px] h-[700px] rounded-full bg-violet-600/10 blur-[160px] pointer-events-none -z-10" />
+      
       <Navbar personal={personal} profile={personal} />
-
-      {/* Main Portfolio Sections */}
-      <main className="flex-1">
+      <main className="flex-1 relative z-10">
         <HeroSection personal={personal} profile={personal} socialLinks={socialLinks} />
         <AboutSection about={about} personal={personal} profile={personal} />
         <SkillsSection skills={skills} />
@@ -159,8 +146,6 @@ const PortfolioPage = () => {
         <ResumeSection personal={personal} profile={personal} resumeDetails={resumeDetails} />
         <ContactSection contact={contact} personal={personal} profile={personal} />
       </main>
-
-      {/* Footer */}
       <Footer personal={personal} profile={personal} socialLinks={socialLinks} />
     </div>
   );

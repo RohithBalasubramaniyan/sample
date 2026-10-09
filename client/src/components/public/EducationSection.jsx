@@ -1,93 +1,67 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, Calendar, Building, School } from 'lucide-react';
+import { GraduationCap, Calendar, Award } from 'lucide-react';
 
 const EducationSection = ({ education = [] }) => {
   return (
-    <section id="education" className="py-24 bg-slate-50 relative border-t border-slate-200/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="education" className="py-24 px-6 lg:px-12 relative overflow-hidden">
+      <div className="max-w-5xl mx-auto z-10 relative">
         
-        {/* Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
-            Academic Background
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
-            Education & Qualifications
+        {/* Header */}
+        <div className="mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs uppercase tracking-widest font-mono mb-3">
+            <GraduationCap className="w-3 h-3 text-cyan-400" />
+            <span>05 // Academics</span>
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white">
+            Education & <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Degrees</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600">
-            Formal foundations in Computer Science, Information Technology, and foundational sciences.
+          <p className="mt-2 text-slate-400 text-sm sm:text-base max-w-xl">
+            Academic credentials and engineering foundations.
           </p>
         </div>
 
-        {/* Timeline */}
-        <div className="max-w-3xl mx-auto relative">
-          {/* Vertical line */}
-          <div className="absolute left-4 sm:left-8 top-3 bottom-3 w-0.5 bg-blue-200" />
+        {/* Education Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {education.map((item, index) => (
+            <motion.div
+              key={item._id || index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="p-6 sm:p-8 rounded-2xl bg-[#0E0E28]/70 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.4)] group"
+            >
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <span className="px-3 py-1 rounded-full text-xs font-mono font-bold text-purple-300 bg-purple-950/40 border border-purple-500/30">
+                  {item.year || `${item.startYear || ''} - ${item.endYear || ''}`}
+                </span>
+                {item.grade && (
+                  <span className="text-xs font-mono text-cyan-400 font-semibold">
+                    {item.grade}
+                  </span>
+                )}
+              </div>
 
-          <div className="space-y-10">
-            {education.map((item, index) => (
-              <motion.div
-                key={item._id || index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="relative pl-12 sm:pl-20"
-              >
-                {/* Timeline node */}
-                <div className="absolute left-2.5 sm:left-6.5 top-1.5 -translate-x-1/2 w-7 h-7 rounded-full bg-white border-2 border-blue-600 flex items-center justify-center text-blue-600 shadow-xs">
-                  <GraduationCap className="w-3.5 h-3.5" />
-                </div>
+              <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors mb-1">
+                {item.degree}
+              </h3>
 
-                {/* Card */}
-                <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900">
-                        {item.degree}
-                      </h3>
-                      {item.department && (
-                        <p className="text-xs font-medium text-blue-600 mt-0.5">
-                          {item.department}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      {(item.cgpa || item.grade) && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                          CGPA: {item.cgpa || item.grade}
-                        </span>
-                      )}
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold w-fit">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {item.year || `${item.startYear} — ${item.endYear}`}
-                      </div>
-                    </div>
-                  </div>
+              <p className="text-sm text-pink-400 font-medium mb-3">
+                {item.fieldOfStudy || item.field}
+              </p>
 
-                  <div className="space-y-1 text-sm text-slate-600 mb-4">
-                    <p className="font-semibold text-slate-800 flex items-center gap-2">
-                      <Building className="w-4 h-4 text-slate-400" />
-                      {item.institution}
-                    </p>
-                    {item.university && (
-                      <p className="text-xs text-slate-500 flex items-center gap-2">
-                        <School className="w-4 h-4 text-slate-400" />
-                        Affiliated to {item.university}
-                      </p>
-                    )}
-                  </div>
+              <p className="text-xs sm:text-sm text-slate-300 mb-3">
+                {item.institution || item.college || item.school}
+              </p>
 
-                  {item.description && (
-                    <p className="text-sm text-slate-600 leading-relaxed pt-3 border-t border-slate-100">
-                      {item.description}
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              {item.description && (
+                <p className="text-xs text-slate-400 leading-relaxed border-t border-purple-500/20 pt-3">
+                  {item.description}
+                </p>
+              )}
+            </motion.div>
+          ))}
         </div>
 
       </div>

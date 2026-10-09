@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Shield, ArrowUpRight, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Shield, X, Menu } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
-  { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
   { name: 'Skills', href: '#skills' },
   { name: 'Projects', href: '#projects' },
-  { name: 'Education', href: '#education' },
   { name: 'Experience', href: '#experience' },
-  { name: 'Certifications', href: '#certifications' },
-  { name: 'Resume', href: '#resume' },
   { name: 'Contact', href: '#contact' },
 ];
 
@@ -19,29 +16,19 @@ const Navbar = ({ personal, profile }) => {
   const { isAuthenticated } = useAuth();
   const info = personal || profile || {};
   const name = info.name || 'Rohith B';
+  const initials = name.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'RB';
   const resumeUrl = info.resume || info.resumeUrl;
-  const role = info.role || info.title || 'Portfolio';
-  const initials = name
-    .split(' ')
-    .filter(Boolean)
-    .map((n) => n[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase() || 'RB';
 
-  const profileImage = info.profileImage;
-  const [navImgError, setNavImgError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled(window.scrollY > 40);
 
-      // Scrollspy logic
-      const sections = navLinks.map((link) => link.href.substring(1));
-      const scrollPosition = window.scrollY + 120;
+      const sections = ['home', 'about', 'skills', 'projects', 'experience', 'education', 'certifications', 'contact'];
+      const scrollPosition = window.scrollY + 180;
 
       for (const section of sections) {
         const el = document.getElementById(section);
@@ -56,7 +43,7 @@ const Navbar = ({ personal, profile }) => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -70,177 +57,172 @@ const Navbar = ({ personal, profile }) => {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80 py-3'
-          : 'bg-white/80 backdrop-blur-sm border-b border-slate-100 py-4'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Logo / Brand */}
-          <a
-            href="#home"
-            className="flex items-center gap-2.5 group"
-            onClick={(e) => handleNavClick(e, '#home')}
+    <>
+      {/* Floating Header */}
+      <motion.header
+        initial={{ y: -30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="fixed top-0 left-0 right-0 z-50 pt-4 px-4 sm:px-8"
+      >
+        <div className="max-w-6xl mx-auto">
+          <div
+            className={`flex items-center justify-between px-6 py-3 rounded-full transition-all duration-300 ${
+              scrolled
+                ? 'bg-[#0E0E28]/85 backdrop-blur-xl border border-purple-500/30 shadow-[0_8px_30px_rgba(0,0,0,0.5)] shadow-purple-950/30'
+                : 'bg-[#0E0E28]/50 backdrop-blur-md border border-purple-500/20'
+            }`}
           >
-            <div className="w-10 h-10 rounded-xl overflow-hidden bg-blue-600 text-white flex items-center justify-center font-bold text-base shadow-sm ring-1 ring-slate-200/60 group-hover:ring-2 group-hover:ring-blue-500 transition-all shrink-0">
-              {profileImage && !navImgError ? (
-                <img
-                  src={profileImage}
-                  alt={name}
-                  className="w-full h-full object-cover object-top"
-                  onError={() => setNavImgError(true)}
-                />
-              ) : (
-                initials
-              )}
-            </div>
-            <div>
-              <span className="font-bold text-slate-900 text-lg tracking-tight group-hover:text-blue-600 transition-colors">
+            {/* Logo */}
+            <a
+              href="#home"
+              onClick={(e) => handleNavClick(e, '#home')}
+              className="flex items-center gap-3 group"
+            >
+              <div className="w-10 h-10 rounded-full p-[1.5px] bg-gradient-to-tr from-purple-500 via-pink-500 to-cyan-400 shadow-[0_0_15px_rgba(155,93,229,0.5)]">
+                <div className="w-full h-full rounded-full bg-[#0B0B1E] flex items-center justify-center">
+                  <span className="text-xs font-extrabold tracking-wider bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                    {initials}
+                  </span>
+                </div>
+              </div>
+              <span className="font-semibold text-sm tracking-wide text-white group-hover:text-cyan-400 transition-colors hidden sm:inline">
                 {name}
               </span>
-              <span className="block text-xs font-medium text-slate-500">
-                {role}
-              </span>
+            </a>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-8">
+              {navLinks.map((link) => {
+                const sectionId = link.href.substring(1);
+                const isActive = activeSection === sectionId;
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`text-xs uppercase font-semibold tracking-widest transition-all duration-200 relative py-1 ${
+                      isActive
+                        ? 'text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.6)]'
+                        : 'text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    {link.name}
+                    {isActive && (
+                      <motion.span
+                        layoutId="navIndicator"
+                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full"
+                      />
+                    )}
+                  </a>
+                );
+              })}
+            </nav>
+
+            {/* Right CTAs */}
+            <div className="flex items-center gap-3">
+              {resumeUrl && (
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:inline-flex text-xs font-semibold uppercase tracking-wider text-slate-300 hover:text-cyan-400 transition-colors px-3 py-1.5"
+                >
+                  Resume
+                </a>
+              )}
+
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, '#contact')}
+                className="relative inline-flex items-center justify-center p-0.5 overflow-hidden rounded-full font-bold text-xs uppercase tracking-wider group cursor-pointer shadow-[0_0_20px_rgba(155,93,229,0.4)] hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300"
+              >
+                <span className="w-full h-full bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 group-hover:from-purple-500 group-hover:to-cyan-300 text-white px-5 py-2 rounded-full transition-all duration-200">
+                  Hire Me
+                </span>
+              </a>
+
+              {isAuthenticated && (
+                <Link
+                  to="/admin/dashboard"
+                  className="text-xs text-purple-400 hover:text-white transition-colors p-1.5 rounded-full hover:bg-purple-500/20"
+                  title="Admin Panel"
+                >
+                  <Shield className="w-4 h-4" />
+                </Link>
+              )}
+
+              {/* Mobile menu trigger */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden w-9 h-9 flex items-center justify-center text-slate-200 hover:text-cyan-400 transition-colors ml-1"
+                aria-label="Toggle menu"
+              >
+                {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
             </div>
-          </a>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center space-x-1 lg:space-x-1.5">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.href.substring(1);
-              return (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'text-blue-600 bg-blue-50/80'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60'
-                  }`}
-                >
-                  {link.name}
-                </a>
-              );
-            })}
-          </nav>
-
-          {/* Desktop Right Actions */}
-          <div className="hidden sm:flex items-center gap-3">
-            {resumeUrl && (
-              <a
-                href={resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors"
-              >
-                <Download className="w-3.5 h-3.5" />
-                Resume
-              </a>
-            )}
-
-            <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, '#contact')}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition-all hover:shadow hover:-translate-y-0.5"
-            >
-              Get in Touch
-            </a>
-
-            {isAuthenticated ? (
-              <Link
-                to="/admin/dashboard"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors"
-                title="Go to Admin CMS Dashboard"
-              >
-                <Shield className="w-3.5 h-3.5" />
-                Admin Panel
-              </Link>
-            ) : (
-              <Link
-                to="/admin/login"
-                className="hidden lg:inline-flex items-center gap-1 text-[11px] font-semibold text-slate-400 hover:text-blue-600 px-2 py-1 rounded transition-colors"
-                title="Admin Sign In"
-              >
-                <Shield className="w-3.5 h-3.5" />
-                Admin
-              </Link>
-            )}
-          </div>
-
-
-          {/* Mobile menu button */}
-          <div className="flex sm:hidden items-center gap-2">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors focus:outline-none"
-              aria-label="Toggle Navigation Menu"
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
           </div>
         </div>
-      </div>
+      </motion.header>
 
-      {/* Mobile Drawer Menu */}
-      {isOpen && (
-        <div className="xl:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 shadow-xl animate-in slide-in-from-top duration-200">
-          <div className="flex flex-col space-y-1">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.href.substring(1);
-              return (
-                <a
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-40 bg-[#0B0B1E]/95 backdrop-blur-2xl flex flex-col px-8 pt-28 pb-10"
+          >
+            <nav className="flex flex-col gap-5">
+              {navLinks.map((link, idx) => (
+                <motion.a
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`px-3 py-2.5 rounded-lg text-base font-medium transition-colors ${
-                    isActive
-                      ? 'text-blue-600 bg-blue-50 font-semibold'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                  }`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="text-2xl font-bold tracking-wider text-slate-200 hover:text-cyan-400 uppercase font-sans transition-colors"
                 >
                   {link.name}
-                </a>
-              );
-            })}
-          </div>
+                </motion.a>
+              ))}
+            </nav>
 
-          <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-2">
-            {resumeUrl && (
+            <div className="mt-auto flex flex-col gap-4">
+              {resumeUrl && (
+                <a
+                  href={resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 text-center text-sm font-semibold uppercase tracking-wider rounded-full border border-purple-500/40 text-slate-200 hover:bg-purple-500/10 transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Download Resume
+                </a>
+              )}
               <a
-                href={resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#contact"
+                onClick={(e) => handleNavClick(e, '#contact')}
+                className="w-full py-3 text-center text-sm font-bold uppercase tracking-wider rounded-full bg-gradient-to-r from-purple-600 to-cyan-500 text-white shadow-[0_0_20px_rgba(155,93,229,0.5)]"
+              >
+                Hire Me
+              </a>
+              <Link
+                to={isAuthenticated ? '/admin/dashboard' : '/admin/login'}
                 onClick={() => setIsOpen(false)}
-                className="w-full text-center py-2.5 rounded-lg text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200"
+                className="text-center text-xs text-slate-400 flex items-center justify-center gap-1.5 py-2"
               >
-                Download Resume
-              </a>
-            )}
-
-            <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, '#contact')}
-              className="w-full text-center py-2.5 rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-sm"
-            >
-              Get in Touch
-            </a>
-
-            <Link
-              to={isAuthenticated ? "/admin/dashboard" : "/admin/login"}
-              onClick={() => setIsOpen(false)}
-              className="w-full text-center py-2.5 rounded-lg text-sm font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 flex items-center justify-center gap-1.5"
-            >
-              <Shield className="w-4 h-4" />
-              {isAuthenticated ? "Admin Dashboard" : "Admin Login"}
-            </Link>
-          </div>
-        </div>
-      )}
-    </header>
+                <Shield className="w-3.5 h-3.5 text-purple-400" />
+                {isAuthenticated ? 'Admin Dashboard' : 'Admin Login'}
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

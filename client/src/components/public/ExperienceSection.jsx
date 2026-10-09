@@ -1,109 +1,114 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, Calendar, Sparkles, Building, ChevronRight, ExternalLink } from 'lucide-react';
+import { Briefcase, Calendar, Building, Sparkles } from 'lucide-react';
 
 const ExperienceSection = ({ experience = [] }) => {
   const hasExperience = experience && experience.length > 0;
 
   return (
-    <section id="experience" className="py-24 bg-white relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="experience" className="py-24 px-6 lg:px-12 relative overflow-hidden">
+      {/* Ambient background glow */}
+      <div className="absolute top-1/2 -right-48 w-96 h-96 bg-purple-600/10 rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto z-10 relative">
         
-        {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
-            Work History
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
-            Practical Experience & Internships
+        {/* Header */}
+        <div className="mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-xs uppercase tracking-widest font-mono mb-3">
+            <Briefcase className="w-3 h-3 text-cyan-400" />
+            <span>04 // Journey</span>
+          </div>
+          <h2 className="text-4xl sm:text-5xl font-black uppercase tracking-tight text-white">
+            Work <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Experience</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600">
-            Real-world projects, freelance contributions, and technical engineering work.
+          <p className="mt-2 text-slate-400 text-sm sm:text-base max-w-xl">
+            Professional trajectory, engineering internships, and key contributions.
           </p>
         </div>
 
-        {/* If no experience, display user's required message */}
+        {/* Timeline Container (Dribbble Signature Timeline Layout) */}
         {!hasExperience ? (
-          <div className="max-w-xl mx-auto text-center bg-blue-50/70 border border-blue-200/80 rounded-3xl p-10 shadow-xs">
-            <div className="w-14 h-14 rounded-2xl bg-blue-600 text-white mx-auto flex items-center justify-center mb-4 shadow-md">
-              <Sparkles className="w-7 h-7" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-2">
-              Currently seeking internship opportunities.
-            </h3>
-            <p className="text-slate-600 text-sm max-w-md mx-auto mb-6">
-              I am actively looking for software engineering, full-stack, or frontend internship roles where I can make an immediate impact.
+          <div className="p-8 rounded-2xl bg-[#0E0E28]/70 border border-purple-500/20 text-center max-w-xl mx-auto">
+            <p className="text-white font-bold text-lg mb-1">Open for Opportunities</p>
+            <p className="text-slate-400 text-sm">
+              Actively seeking software developer internship or junior full-stack engineering roles.
             </p>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition-colors"
-            >
-              Get in Touch
-              <ChevronRight className="w-4 h-4" />
-            </a>
           </div>
         ) : (
-          <div className="max-w-3xl mx-auto space-y-8">
-            {experience.map((exp, index) => (
-              <motion.div
-                key={exp._id || index}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="bg-slate-50/60 rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-xs hover:border-blue-200 hover:bg-white transition-all duration-200"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900">
-                      {exp.position}
-                    </h3>
-                    <p className="text-blue-600 font-semibold text-sm flex items-center gap-1.5 mt-0.5">
-                      <Building className="w-4 h-4" />
-                      {exp.company}
-                    </p>
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-semibold w-fit">
-                    <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                    {exp.startDate} — {exp.endDate || 'Present'}
-                  </div>
-                </div>
+          <div className="relative pl-6 sm:pl-10">
+            {/* Glowing vertical timeline beam */}
+            <div className="absolute left-2.5 sm:left-4 top-4 bottom-4 w-[2px] bg-gradient-to-b from-purple-500 via-cyan-400 to-purple-600/20 shadow-[0_0_10px_rgba(6,182,212,0.5)]" />
 
-                {exp.description && (
-                  <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                    {exp.description}
-                  </p>
-                )}
+            <div className="space-y-10">
+              {experience.map((item, idx) => (
+                <motion.div
+                  key={item._id || idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                  className="relative group"
+                >
+                  {/* Glowing node dot */}
+                  <div className="absolute -left-[27px] sm:-left-[35px] top-4 w-4 h-4 rounded-full bg-[#0B0B1E] border-2 border-cyan-400 shadow-[0_0_12px_#22d3ee] group-hover:scale-125 transition-transform" />
 
-                {exp.technologies && exp.technologies.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-1.5 pt-3 border-t border-slate-200/70">
-                    <span className="text-xs font-semibold text-slate-400 mr-1">Skills used:</span>
-                    {exp.technologies.map((tech, tIdx) => (
-                      <span
-                        key={tIdx}
-                        className="px-2.5 py-0.5 rounded-md bg-white border border-slate-200 text-slate-700 text-xs font-medium"
-                      >
-                        {tech}
+                  {/* Glassmorphic card */}
+                  <div className="rounded-2xl bg-[#0E0E28]/80 backdrop-blur-xl border border-purple-500/20 group-hover:border-cyan-400/50 p-6 sm:p-8 transition-all duration-300 shadow-[0_8px_30px_rgba(0,0,0,0.4)] group-hover:shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+                    
+                    {/* Date badge & Role */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                      <span className="px-3 py-1 rounded-full text-xs font-mono font-bold text-cyan-300 bg-cyan-950/40 border border-cyan-500/30">
+                        {item.startDate || 'Present'} — {item.endDate || (item.current ? 'Present' : 'Ended')}
                       </span>
-                    ))}
-                  </div>
-                )}
+                      {item.location && (
+                        <span className="text-xs font-mono text-slate-400">
+                          {item.location}
+                        </span>
+                      )}
+                    </div>
 
-                {exp.certificateUrl && (
-                  <div className="pt-3 flex justify-end">
-                    <a
-                      href={exp.certificateUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline"
-                    >
-                      View Certificate / Offer Letter
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">
+                      {item.role || item.position}
+                    </h3>
+                    
+                    <div className="flex items-center gap-2 text-sm text-purple-300 font-medium mt-1 mb-4">
+                      <Building className="w-4 h-4 text-pink-400" />
+                      <span>{item.company}</span>
+                    </div>
+
+                    {item.description && (
+                      <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                        {item.description}
+                      </p>
+                    )}
+
+                    {item.responsibilities && item.responsibilities.length > 0 && (
+                      <ul className="space-y-2 mt-3 pt-3 border-t border-purple-500/20">
+                        {item.responsibilities.map((resp, rIdx) => (
+                          <li key={rIdx} className="text-xs sm:text-sm text-slate-300 flex items-start gap-2.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 shrink-0 shadow-[0_0_6px_#22d3ee]" />
+                            <span>{resp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {item.technologies && item.technologies.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-purple-500/20">
+                        {item.technologies.map((tech, tIdx) => (
+                          <span
+                            key={tIdx}
+                            className="px-2 py-0.5 rounded text-[11px] font-mono text-slate-300 bg-purple-950/30 border border-purple-500/20"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
         )}
 

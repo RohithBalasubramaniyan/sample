@@ -1,233 +1,191 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download, ArrowRight, MapPin, Briefcase } from 'lucide-react';
+import { ArrowDown, Download, ArrowRight, MapPin, Sparkles, Code2 } from 'lucide-react';
 import { Github, Linkedin } from '../common/BrandIcons';
-import DynamicIcon from '../common/DynamicIcon';
 
 const HeroSection = ({ personal, profile, socialLinks = [] }) => {
   const data = personal || profile || {};
-  const greeting = data.greeting || 'Hello, I am';
   const name = data.name || 'Rohith B';
-  const role = data.role || data.title || 'IT Student | Web Developer';
-  const tagline = data.tagline || data.bio || 'Building modern, scalable, and responsive web applications';
+  const role = data.role || data.title || 'Aspiring Full-Stack Developer';
+  const tagline = data.tagline || 'Building modern, high-performance web applications with clean architecture.';
   const bio = data.bio || tagline;
-  const statusBadge = data.statusBadge || 'Available for Internships & Opportunities';
   const location = data.location || 'India';
   const resumeUrl = data.resume || data.resumeUrl;
   const profileImage = data.profileImage || '/images/profile.jpg';
-  const specialization = data.workType || data.specialization || 'Full-Stack & Web Engineering';
-  const viewProjectsText = data.viewProjectsText || 'View Projects';
-  const viewResumeText = data.viewResumeText || 'Download Resume';
+  const statusBadge = data.statusBadge || 'Available for opportunities';
 
   const [imgError, setImgError] = useState(false);
 
+  const nameParts = name.trim().split(' ');
+  const firstName = nameParts[0] || 'ROHITH';
+  const lastName = nameParts.slice(1).join(' ') || 'B';
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section id="home" className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-gradient-to-b from-blue-50/50 via-white to-slate-50">
-      {/* Subtle decorative grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-40 pointer-events-none" />
+    <section id="home" className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-6 lg:px-12 overflow-hidden">
+      {/* Background radial spotlights */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-cyan-500/15 rounded-full blur-[120px] pointer-events-none" />
+      
+      {/* Background grid dots */}
+      <div 
+        className="absolute inset-0 opacity-[0.07] pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #9B5DE5 1px, transparent 1px)',
+          backgroundSize: '32px 32px'
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          
-          {/* Left Text Column */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-7 space-y-6 text-center lg:text-left"
-          >
-            {/* Status badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 border border-blue-200 text-blue-700 text-xs font-semibold tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center z-10">
+        
+        {/* Left column: Text content */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+          className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6"
+        >
+          {/* Status badge */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#12122F]/80 border border-purple-500/30 shadow-[0_0_15px_rgba(155,93,229,0.2)]">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+            <span className="text-xs font-semibold tracking-wider uppercase text-purple-200">
               {statusBadge}
+            </span>
+          </div>
+
+          {/* Main big headline with Antigravity Floating Effect */}
+          <div className="antigravity-float-text">
+            <h1 className="whitespace-nowrap text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight leading-none inline-flex items-center justify-center lg:justify-start gap-2.5 sm:gap-4 select-none">
+              <span className="text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                {firstName}
+              </span>
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(155,93,229,0.45)]">
+                {lastName}
+              </span>
+            </h1>
+          </div>
+
+          {/* Role badge */}
+          <p className="text-lg sm:text-xl font-medium text-cyan-300/90 tracking-wide">
+            {role}
+          </p>
+
+          {/* Bio / Tagline */}
+          <p className="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed">
+            {bio}
+          </p>
+
+          {/* Location badge */}
+          {location && (
+            <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+              <MapPin className="w-3.5 h-3.5 text-pink-400" />
+              <span>Based in {location}</span>
             </div>
+          )}
 
-            {/* Main Heading */}
-            <div className="space-y-2">
-              <p className="text-sm uppercase tracking-widest font-semibold text-slate-500">
-                {greeting}
-              </p>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                {name}
-              </h1>
-              <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-blue-600">
-                {role}
-              </h2>
-            </div>
+          {/* Action buttons */}
+          <div className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider text-white bg-gradient-to-r from-purple-600 via-fuchsia-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 shadow-[0_0_25px_rgba(155,93,229,0.6)] hover:shadow-[0_0_35px_rgba(6,182,212,0.8)] transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+            >
+              Hire Me
+            </button>
 
-            {/* Tagline / Bio */}
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              {bio}
-            </p>
+            <button
+              onClick={() => scrollToSection('projects')}
+              className="px-7 py-3.5 rounded-full font-semibold text-sm uppercase tracking-wider text-slate-200 bg-[#12122E]/80 border border-purple-500/30 hover:border-cyan-400/60 hover:text-white transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+            >
+              View Projects
+            </button>
 
-            {/* Info pills */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs sm:text-sm text-slate-500">
-              {location && (
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-slate-400" />
-                  {location}
-                </span>
-              )}
-              {specialization && (
-                <span className="flex items-center gap-1.5">
-                  <Briefcase className="w-4 h-4 text-slate-400" />
-                  {specialization}
-                </span>
-              )}
-            </div>
-
-            {/* Call to action buttons */}
-            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3.5">
+            {resumeUrl && (
               <a
-                href="#projects"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5"
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3.5 rounded-full text-slate-300 bg-[#12122E]/80 border border-purple-500/30 hover:text-cyan-400 hover:border-cyan-400/60 transition-all duration-300 cursor-pointer"
+                title="Download Resume"
               >
-                {viewProjectsText}
-                <ArrowRight className="w-4 h-4" />
+                <Download className="w-4 h-4" />
               </a>
+            )}
+          </div>
 
-              {resumeUrl ? (
+          {/* Social icons */}
+          {socialLinks && socialLinks.length > 0 && (
+            <div className="pt-2 flex items-center gap-3">
+              {socialLinks.map((s, idx) => (
                 <a
-                  href={resumeUrl}
+                  key={idx}
+                  href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-semibold text-sm shadow-sm hover:shadow transition-all duration-200 hover:-translate-y-0.5"
+                  className="w-9 h-9 rounded-full bg-[#12122F]/90 border border-purple-500/20 hover:border-cyan-400 flex items-center justify-center text-slate-300 hover:text-cyan-400 shadow-sm transition-all duration-200 hover:scale-110"
+                  title={s.platform}
                 >
-                  <Download className="w-4 h-4 text-blue-600" />
-                  {viewResumeText}
-                </a>
-              ) : (
-                <a
-                  href="#resume"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-800 font-semibold text-sm shadow-sm hover:shadow transition-all duration-200"
-                >
-                  <Download className="w-4 h-4 text-blue-600" />
-                  {viewResumeText}
-                </a>
-              )}
-
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm transition-colors"
-              >
-                Contact Me
-              </a>
-            </div>
-
-            {/* Social media links */}
-            <div className="pt-4 flex items-center justify-center lg:justify-start gap-3">
-              <span className="text-xs font-medium text-slate-400 mr-1">Connect:</span>
-              {socialLinks && socialLinks.length > 0 ? (
-                socialLinks.map((link, idx) => (
-                  <a
-                    key={link.id || link.platform || idx}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-blue-500 hover:text-blue-600 text-slate-600 flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5"
-                    title={link.platform}
-                  >
-                    <DynamicIcon name={link.icon || link.platform} className="w-4 h-4" />
-                  </a>
-                ))
-              ) : (
-                <>
-                  <a
-                    href="https://github.com/rohith-b"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-blue-500 hover:text-blue-600 text-slate-600 flex items-center justify-center transition-colors"
-                  >
+                  {s.platform?.toLowerCase().includes('github') ? (
                     <Github className="w-4 h-4" />
-                  </a>
-                  <a
-                    href="https://linkedin.com/in/rohith-b"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-blue-500 hover:text-blue-600 text-slate-600 flex items-center justify-center transition-colors"
-                  >
+                  ) : s.platform?.toLowerCase().includes('linkedin') ? (
                     <Linkedin className="w-4 h-4" />
-                  </a>
-                </>
+                  ) : (
+                    <Code2 className="w-4 h-4" />
+                  )}
+                </a>
+              ))}
+            </div>
+          )}
+        </motion.div>
+
+        {/* Right column: Glowing Circular Avatar (Dribbble shot signature feature) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+          className="lg:col-span-5 flex justify-center items-center relative"
+        >
+          {/* Outer glow rings */}
+          <div className="absolute w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-purple-600/30 via-pink-600/20 to-cyan-500/30 blur-2xl pointer-events-none animate-pulse" />
+
+          {/* The signature Dribbble double neon gradient ring with Antigravity Floating Effect */}
+          <div className="antigravity-float-photo relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full p-[4px] bg-gradient-to-tr from-purple-500 via-pink-500 to-cyan-400 shadow-[0_0_50px_rgba(155,93,229,0.45),0_0_70px_rgba(6,182,212,0.35)] transition-transform duration-500 hover:scale-[1.02]">
+            
+            {/* Inner frame */}
+            <div className="w-full h-full rounded-full bg-[#0B0B1E] p-2 overflow-hidden flex items-center justify-center relative">
+              {!imgError ? (
+                <img
+                  src={profileImage}
+                  alt={name}
+                  onError={() => setImgError(true)}
+                  className="w-full h-full object-cover rounded-full grayscale-[15%] hover:grayscale-0 transition-all duration-500"
+                />
+              ) : (
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-[#1E1138] to-[#0A1A2F] flex flex-col items-center justify-center text-center p-6">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-purple-600 to-cyan-400 flex items-center justify-center text-3xl font-black text-white shadow-[0_0_25px_rgba(155,93,229,0.6)] mb-3">
+                    {firstName[0]}{lastName[0]}
+                  </div>
+                  <p className="text-white font-bold text-lg">{name}</p>
+                  <p className="text-cyan-400 text-xs font-mono mt-1">{role}</p>
+                </div>
               )}
             </div>
-          </motion.div>
 
-          {/* Right Profile Column */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="lg:col-span-5 flex justify-center"
-          >
-            <div className="relative">
-              {/* Outer decorative halo */}
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-blue-600/20 via-sky-400/20 to-indigo-600/20 blur-xl opacity-70"></div>
+            {/* Orbiting mini badges */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+              className="absolute inset-[-14px] rounded-full pointer-events-none"
+            >
+              <div className="absolute top-2 left-6 w-3.5 h-3.5 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]" />
+              <div className="absolute bottom-6 right-6 w-3 h-3 rounded-full bg-purple-400 shadow-[0_0_12px_#c084fc]" />
+            </motion.div>
+          </div>
+        </motion.div>
 
-              {/* Main Profile Card */}
-              <div className="relative w-72 sm:w-80 md:w-96 rounded-3xl bg-white p-4 shadow-xl border border-slate-200/80">
-                <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-blue-50 flex items-center justify-center border border-slate-100">
-                  {profileImage && !imgError ? (
-                    <img
-                      src={profileImage}
-                      alt={name}
-                      onError={() => setImgError(true)}
-                      className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-blue-600 via-blue-700 to-slate-900 text-white">
-                      <div className="w-24 h-24 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-4 shadow-inner">
-                        <span className="text-4xl font-black tracking-tight text-white">
-                          {name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'RB'}
-                        </span>
-                      </div>
-                      <h3 className="font-bold text-xl">{name}</h3>
-                      <p className="text-xs text-blue-200 mt-1 max-w-[200px]">
-                        {role}
-                      </p>
-                      <div className="mt-4 flex flex-wrap gap-1.5 justify-center">
-                        <span className="px-2 py-0.5 rounded-md bg-white/15 text-[11px] font-medium">React.js</span>
-                        <span className="px-2 py-0.5 rounded-md bg-white/15 text-[11px] font-medium">Node.js</span>
-                        <span className="px-2 py-0.5 rounded-md bg-white/15 text-[11px] font-medium">MongoDB</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Floating mini stat card */}
-                <div className="absolute -bottom-5 -left-4 sm:-left-6 bg-white/95 backdrop-blur-md rounded-2xl p-3.5 shadow-lg border border-slate-200 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-base">
-                    💻
-                  </div>
-                  <div>
-                    <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                      Focus Area
-                    </div>
-                    <div className="text-xs font-bold text-slate-800">
-                      {role.split('|')[0]?.trim() || 'Software Engineer'}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating mini education badge */}
-                <div className="absolute -top-4 -right-3 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-lg border border-slate-200 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
-                    🎓
-                  </div>
-                  <div className="pr-1">
-                    <div className="text-[10px] font-semibold text-slate-400 uppercase">
-                      Status
-                    </div>
-                    <div className="text-xs font-bold text-slate-800">
-                      IT Undergraduate
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-        </div>
       </div>
     </section>
   );
