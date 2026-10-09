@@ -2,8 +2,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
-// https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  // On GitHub Pages (repository 'sample'), assets are served under /sample/
+  // In development, base is '/'
+  base: process.env.VITE_BASE_PATH || (mode === 'production' ? '/sample/' : '/'),
   plugins: [
     react(),
     tailwindcss(),
@@ -21,5 +23,5 @@ export default defineConfig({
       },
     },
   },
-});
+}));
 

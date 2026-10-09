@@ -25,7 +25,7 @@ import ManageSocialLinks from './pages/admin/ManageSocialLinks';
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename={import.meta.env.BASE_URL}>
         {/* Global Toast Notifications */}
         <Toaster
           position="top-right"
